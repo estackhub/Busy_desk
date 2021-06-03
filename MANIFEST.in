@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include busy_desk *.css
+recursive-include busy_desk *.csv
+recursive-include busy_desk *.html
+recursive-include busy_desk *.ico
+recursive-include busy_desk *.js
+recursive-include busy_desk *.json
+recursive-include busy_desk *.md
+recursive-include busy_desk *.png
+recursive-include busy_desk *.py
+recursive-include busy_desk *.svg
+recursive-include busy_desk *.txt
+recursive-exclude busy_desk *.pyc
