@@ -1,0 +1,60 @@
+{
+ "category": "Modules",
+ "charts": [],
+ "creation": "2021-06-05 15:15:40.061047",
+ "developer_mode_only": 0,
+ "disable_user_customization": 0,
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "extends_another_page": 0,
+ "hide_custom": 0,
+ "icon": "loan",
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "label": "Busy Desk",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer Reporting",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Customer Summary",
+   "link_to": "Statement Viewer",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Stock Loading...",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  }
+ ],
+ "modified": "2021-06-05 16:02:56.284848",
+ "modified_by": "Administrator",
+ "module": "Busy Desk",
+ "name": "Busy Desk",
+ "owner": "Administrator",
+ "pin_to_bottom": 0,
+ "pin_to_top": 0,
+ "shortcuts": [
+  {
+   "color": "#CB2929",
+   "doc_view": "Report Builder",
+   "label": "Customer Report",
+   "link_to": "Statement Viewer",
+   "type": "DocType"
+  }
+ ]
+}

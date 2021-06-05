@@ -1,0 +1,144 @@
+{
+ "actions": [],
+ "creation": "2021-06-04 00:11:05.172243",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "section_preferences",
+  "no_letter_head",
+  "letter_head",
+  "column_break_8",
+  "no_ageing",
+  "html_schedule",
+  "view_manual",
+  "preview_html",
+  "customer",
+  "from_date",
+  "column_break_10",
+  "to_date",
+  "preview"
+ ],
+ "fields": [
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_preferences",
+   "fieldtype": "Section Break",
+   "label": "Preferences"
+  },
+  {
+   "fieldname": "column_break_8",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "description": "Check this box to hide the Ageing/Accounts Receivable Summary table shown below the statement",
+   "fieldname": "no_ageing",
+   "fieldtype": "Check",
+   "label": "No Ageing Summary"
+  },
+  {
+   "fieldname": "html_schedule",
+   "fieldtype": "HTML",
+   "options": "<p class=\"help-box small text-muted\"> Feature coming soon </p>"
+  },
+  {
+   "fieldname": "preview_html",
+   "fieldtype": "HTML",
+   "options": "<p class=\"help-box small text-muted\">Preview or Print Customer Statement for Customer:</p>"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "from_date",
+   "fieldtype": "Date",
+   "label": "From Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "to_date",
+   "fieldtype": "Date",
+   "label": "To Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "preview",
+   "fieldtype": "Button",
+   "label": "Preview"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "view_manual",
+   "fieldtype": "Section Break",
+   "label": "Manual Report"
+  },
+  {
+   "default": "0",
+   "description": "Check this box to hide the Letterhead. If unchecked, your company's default letterhead will be used, or the letterhead defined below",
+   "fieldname": "no_letter_head",
+   "fieldtype": "Check",
+   "label": "No Letter Head"
+  },
+  {
+   "depends_on": "eval: doc.no_letter_head==0",
+   "fieldname": "letter_head",
+   "fieldtype": "Link",
+   "label": "Letter Head",
+   "options": "Letter Head"
+  }
+ ],
+ "issingle": 1,
+ "links": [],
+ "modified": "2021-06-05 13:53:14.232023",
+ "modified_by": "Administrator",
+ "module": "Busy Desk",
+ "name": "Statement Viewer",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Accounts User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
