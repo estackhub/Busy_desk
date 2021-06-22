@@ -55,13 +55,13 @@ app_license = "MIT"
 
 # Custom Jinja Filters
 # ----------
-"""
+
 jenv = {
 	"methods": [
-		"format_value:erpnext_customer_statements_sender.api.frappe_format_value"
+		"format_value:busy_desk.api.frappe_format_value"
 	]
 }
-"""
+
 # Installation
 # ------------
 
@@ -181,4 +181,8 @@ user_data_fields = [
 # auth_hooks = [
 # 	"busy_desk.auth.validate"
 # ]
+
+fixtures = [
+    {"dt":"Custom Field", "filters": [["dt", "in", ("Customer", "Contact")], ["fieldname", "in", ("disable_customer_statements", "is_customer_statement_contact")]]}
+]
 
