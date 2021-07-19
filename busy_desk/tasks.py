@@ -21,7 +21,7 @@ def cronstom():
     
     date_time = global_date_format(now()) + " " + format_time(now())
     new_note = frappe.get_doc({"doctype": "Note",
-        "title": "Always same value" + date_time
+        "title": "Always Sent" + date_time
     })
     new_note.insert()
     frappe.db.commit()

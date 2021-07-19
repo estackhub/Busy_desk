@@ -191,6 +191,6 @@ user_data_fields = [
 fixtures = [
     {"dt":"Custom Field", 
 	"filters": [
-		["dt", "in", ("Contact")], ["fieldname", "in", ("is_customer_statement_contact","enable_torecieve_report")]]}
+		["dt", "in", ("Contact")], ["fieldname", "in", ("is_customer_report_contact","enable_torecieve_report")]]}
 ]
 
