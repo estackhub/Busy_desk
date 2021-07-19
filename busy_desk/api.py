@@ -51,9 +51,7 @@ def statements_sender_scheduler(manual=None):
 
 
 def send_statements(company=None, manual=None):
-    """
-    Send out customer statements
-    """
+    
     show_progress = manual
     progress_title = _("Sending customer statements...")
 
@@ -278,3 +276,124 @@ def send_individual_statement(customer, email_id, company, from_date, to_date):
         doctype="Report",
         name="General Ledger",
     )
+
+""" management emailing """
+#! design template auto send daily customer balance
+@frappe.whitelist()
+def get_directors_list():
+    
+    return frappe.db.sql(
+        """SELECT 
+            contact, email_id, phone, MIN(priority) AS priority, send_report
+            FROM
+                (SELECT
+                    tab_con.name AS 'contact',
+                    tab_con.email_id,
+                    tab_con.phone,
+                    CASE WHEN is_customer_report_contact = 1 THEN 1 WHEN tab_con.is_primary_contact = 1 THEN 2 ELSE 3 END AS 'priority',
+                    CASE WHEN tab_con.enable_torecieve_report = 0 THEN 'No (Disabled for this customer)' WHEN ISNULL(tab_con.email_id) OR tab_con.email_id = '' THEN 'No (No email address on record)' ELSE 'Yes' END AS 'send_report'
+                FROM `tabContact` as tab_con ) AS t_contact
+                WHERE send_report = 'Yes'
+                """,
+        as_dict=True,
+    )
+
+def enqueue_mail():
+    """ """
+    enqueue_frappe(
+        method=send_balances,
+        queue="long",
+        timeout=600000,
+        is_async=True,
+        job_name="send_balances",
+    )
+
+def send_balances():
+    company = frappe.db.get_single_value("Customer Balance Viewer", "company")
+
+    email_list = get_directors_list()
+    idx = 0
+    total = len(email_list)
+    
+    for row in email_list:
+        idx += 1        
+        if row.email_id is not None and row.email_id != "":
+            if row.send_report == "Yes":
+                send_toeach_director(
+                    row.contact,
+                    row.email_id,
+                    company,
+                )
+
+@frappe.whitelist()
+def send_toeach_director(party, party_email, company):
+    
+    data = get_schedule_content(
+        company,
+        party,
+    )
+    # Get PDF Data
+    pdfattach_data = get_pdf(data)
+    if not pdfattach_data:
+        return
+    attachments = [{"fname": "{0}.{1}".format(today().replace(" ", "-").replace("/", "-").replace(":","-"),"pdf"), "fcontent": pdfattach_data}]
+
+    make(
+        recipients=party_email,
+        send_email=True,
+        subject="Customer Balance",
+        content="Good day. <br> Please find attached your latest statement ",
+        attachments=attachments,
+        doctype="Report",
+        name="Customer Ledger Summary",
+    )
+
+@frappe.whitelist()
+def get_schedule_content(company, party=None, from_date=None, to_date=None, customer_group=None ):
+    ''' report '''
+    #settings_doc = frappe.get_single("Statement Viewer")
+
+    if not from_date:
+        from_date = today()
+    if not to_date:
+        to_date = today()
+
+    # Get General Ledger report content
+    report_cls = frappe.get_doc("Report", "Customer Ledger Summary")
+    report_cls_filters = {        
+        "company": company,
+        "customer_group": customer_group,
+        "from_date": from_date,
+        "to_date": to_date,
+    }
+
+    columns_cls, data_cls = report_cls.get_data(
+        limit=500, user="Administrator", filters=report_cls_filters, as_dict=True
+    )
+    
+    # add serial numbers
+    columns_cls.insert(0, frappe._dict(fieldname="idx", label="", width="30px"))
+    for i in range(len(data_cls)):
+        data_cls[i]["idx"] = i + 1
+    
+    # Render Template
+    date_time = global_date_format(now()) + " " + format_time(now())
+    currency = frappe.db.get_value("Company", company, "default_currency")
+    report_myhtml_data = frappe.render_template(
+        "busy_desk/templates/report/schedule_customer_report_jinja.html",
+        {
+            "title": "Customer Statement ",
+            "description": "Customer Statement ",
+            "date_time": date_time,
+            "data": data_cls,
+            "report_name": "Customer Statement ",
+            "filters": report_cls_filters,
+            "currency": currency,
+            
+        },
+    )
+    return report_myhtml_data
+
+
+
+

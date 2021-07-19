@@ -108,24 +108,30 @@ jenv = {
 
 # Scheduled Tasks
 # ---------------
-
-# scheduler_events = {
-# 	"all": [
-# 		"busy_desk.tasks.all"
-# 	],
-# 	"daily": [
-# 		"busy_desk.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"busy_desk.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"busy_desk.tasks.weekly"
-# 	]
-# 	"monthly": [
-# 		"busy_desk.tasks.monthly"
-# 	]
-# }
+# jd:call==> in cronjob send_toeach_director
+# "busy_desk.api.send_balances"
+scheduler_events = {
+	"cronstom":{
+		"18 15 * * 1-6":[
+			"busy_desk.tasks.cronstom"			
+		]
+	}
+	# "all": [
+	# 	"busy_desk.tasks.all"
+	# ],
+	# "daily": [
+	# 	"busy_desk.tasks.daily"
+	# ],
+	# "hourly": [
+	# 	"busy_desk.tasks.hourly"
+	# ],
+	# "weekly": [
+	# 	"busy_desk.tasks.weekly"
+	# ]
+	# "monthly": [
+	# 	"busy_desk.tasks.monthly"
+	# ]
+}
 
 # Testing
 # -------
@@ -183,6 +189,8 @@ user_data_fields = [
 # ]
 
 fixtures = [
-    {"dt":"Custom Field", "filters": [["dt", "in", ("Customer", "Contact")], ["fieldname", "in", ("disable_customer_statements", "is_customer_statement_contact")]]}
+    {"dt":"Custom Field", 
+	"filters": [
+		["dt", "in", ("Contact")], ["fieldname", "in", ("is_customer_statement_contact","enable_torecieve_report")]]}
 ]
 
