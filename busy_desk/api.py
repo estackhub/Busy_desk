@@ -284,13 +284,12 @@ def get_directors_list():
     
     return frappe.db.sql(
         """SELECT 
-            contact, email_id, phone, MIN(priority) AS priority, send_report
+            contact, email_id, phone, send_report
             FROM
                 (SELECT
                     tab_con.name AS 'contact',
                     tab_con.email_id,
                     tab_con.phone,
-                    CASE WHEN is_customer_report_contact = 1 THEN 1 WHEN tab_con.is_primary_contact = 1 THEN 2 ELSE 3 END AS 'priority',
                     CASE WHEN tab_con.enable_torecieve_report = 0 THEN 'No (Disabled for this customer)' WHEN ISNULL(tab_con.email_id) OR tab_con.email_id = '' THEN 'No (No email address on record)' ELSE 'Yes' END AS 'send_report'
                 FROM `tabContact` as tab_con ) AS t_contact
                 WHERE send_report = 'Yes'
