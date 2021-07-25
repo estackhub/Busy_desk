@@ -112,7 +112,7 @@ jenv = {
 # "busy_desk.api.send_balances"
 scheduler_events = {
 	"cronstom":{
-		"18 15 * * 1-6":[
+		"15 18 * * 1-6":[
 			"busy_desk.tasks.cronstom"			
 		]
 	}

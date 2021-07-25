@@ -309,10 +309,18 @@ def enqueue_mail():
 
 def send_balances():
     company = frappe.db.get_single_value("Customer Balance Viewer", "company")
-
-    email_list = get_directors_list()
-    idx = 0
-    total = len(email_list)
+    email_list = get_directors_list() 
+    idx = 0 
+    total = len(email_list) 
+    data = get_schedule_content(
+        company,
+    )
+    # Get PDF Data
+    pdfattach_data = get_pdf(data)
+    if not pdfattach_data:
+        return
+    attachments = [{"fname": "{0}.{1}".format(today().replace(" ", "-").replace("/", "-").replace(":","-"),"pdf"), "fcontent": pdfattach_data}]
+    
     
     for row in email_list:
         idx += 1        
@@ -322,21 +330,13 @@ def send_balances():
                     row.contact,
                     row.email_id,
                     company,
+                    attachments,
                 )
 
-@frappe.whitelist()
-def send_toeach_director(party, party_email, company):
-    
-    data = get_schedule_content(
-        company,
-        party,
-    )
-    # Get PDF Data
-    pdfattach_data = get_pdf(data)
-    if not pdfattach_data:
-        return
-    attachments = [{"fname": "{0}.{1}".format(today().replace(" ", "-").replace("/", "-").replace(":","-"),"pdf"), "fcontent": pdfattach_data}]
 
+@frappe.whitelist()
+def send_toeach_director(party, party_email, company, attachments):
+    
     make(
         recipients=party_email,
         send_email=True,
